@@ -183,7 +183,7 @@ export async function buildAddon(slugs, { loginUrl } = {}) {
 
   const manifest = {
     id: "local.cinefy.privado",
-    version: "0.4.0",
+    version: "0.4.1",
     name: "Cinefy (privado)",
     description: "Fontes e videos da sua conta do Cinefy. Uso pessoal, roda localmente.",
     resources: [
