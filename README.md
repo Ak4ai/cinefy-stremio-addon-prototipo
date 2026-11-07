@@ -53,3 +53,7 @@ npm run smoke     # confere a sua conta real (depois de entrar em /login)
 - O casamento IMDb → título do Cinefy é por nome e ano; pode errar em títulos com nomes muito diferentes.
 - O Cinefy não informa o idioma do áudio; o rótulo é uma pista pelo texto do título do vídeo.
 - O CDN não exige `Referer` (testado), então a fonte é o link HLS direto.
+
+## Licença
+
+[MIT](LICENSE). Este projeto não é afiliado ao Stremio nem ao Cinefy; os nomes pertencem aos seus donos.
