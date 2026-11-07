@@ -34,7 +34,7 @@ jobs:
         run: |
           PASTA="cinefy-stremio-addon-prototipo"
           rm -rf dist && mkdir -p "dist/$PASTA"
-          cp -r index.js package.json package-lock.json README.md src "dist/$PASTA/"
+          cp -r index.js package.json package-lock.json README.md LICENSE src "dist/$PASTA/"
           (cd dist && zip -qr "$PASTA-${GITHUB_REF_NAME#v}.zip" "$PASTA")
           ls -la dist
 
