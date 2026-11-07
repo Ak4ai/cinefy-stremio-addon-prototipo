@@ -1,0 +1,48 @@
+name: Release
+
+# Para publicar uma versao: atualize "version" no package.json, faca o commit e crie a tag, por exemplo:
+#   git tag v0.4.0 && git push origin v0.4.0
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: A tag precisa bater com a versao do package.json
+        run: |
+          VERSAO="v$(node -p "require('./package.json').version")"
+          if [ "$VERSAO" != "$GITHUB_REF_NAME" ]; then
+            echo "Tag $GITHUB_REF_NAME diferente de package.json ($VERSAO)"; exit 1
+          fi
+
+      - run: npm ci
+      - run: npm test
+
+      - name: Montar o pacote
+        run: |
+          PASTA="cinefy-stremio-addon-prototipo"
+          rm -rf dist && mkdir -p "dist/$PASTA"
+          cp -r index.js package.json package-lock.json README.md src "dist/$PASTA/"
+          (cd dist && zip -qr "$PASTA-${GITHUB_REF_NAME#v}.zip" "$PASTA")
+          ls -la dist
+
+      - name: Publicar a release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/*.zip \
+            --title "Protótipo $GITHUB_REF_NAME" \
+            --generate-notes \
+            --prerelease
